@@ -1,0 +1,43 @@
+li a {
+    color: #efdab9 !important;
+}
+
+a.navbar-brand {
+    color: #efdab9 !important;
+}
+
+nav {
+    background-color: #574b4f !important; 
+    border: none !important;
+}
+
+i.fa-lightbulb {
+    color:#FFCC00;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif; 
+    color: #efdab9;
+    background-color: #343233;
+}
+
+div.thumbnail {
+    padding: 0;
+    border: none; 
+    border-radius: 5px; 
+    background-color: #574b4f;
+}
+
+div.thumbnail div.caption {
+    color: #efdab9;
+}
+
+#myMainButton {
+    background-color: #FFCC00; 
+    border: none; 
+    color:  #574b4f
+}
+
+#myMainJumbotron {
+    background-color: #574b4f;
+}

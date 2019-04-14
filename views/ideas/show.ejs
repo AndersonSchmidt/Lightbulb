@@ -1,0 +1,18 @@
+<% include ../partials/header.ejs %>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="thumbnail">
+                <img src="<%= idea.imagePath %>" class="img-responsive" style="width: 100%; border-radius: 5px 5px 0  0;">
+                <div class="caption">
+                    <h4><a href=""> <%=idea.name %> </a> </h4>
+                    <p> <%= idea.description %></p>
+                    <p>
+                        <em> Submitted By Anderson Schmidt </em>
+                        <span style="float:right;"> 5 <i class="far fa-lightbulb"></i> </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% include ../partials/footer.ejs %>
