@@ -1,5 +1,7 @@
 Lightbulb is a Web Application for sharing Apps and Web Applications Ideas.
 
+I'm using Node.js, Express, MongoDB and EJS on this project.
+
 People can share, for example, some App idea, than people will comment and vote this idea.
 
 The application is still in the beginning, in the images below you can see how it looks.
