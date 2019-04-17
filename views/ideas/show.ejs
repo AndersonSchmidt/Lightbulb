@@ -10,6 +10,10 @@
                         <em> Submitted By Anderson Schmidt </em>
                         <span style="float:right;"> 5 <i class="far fa-lightbulb"></i> </span>
                     </p>
+                    <a href="/ideas/<%=idea._id%>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/ideas/<%=idea._id%>?_method=DELETE" method="POST" class="delete-form" style="display: inline">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>

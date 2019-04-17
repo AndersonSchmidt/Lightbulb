@@ -3,7 +3,8 @@ var express    = require("express"),
     bodyParser = require("body-parser"),
     favicon    = require("express-favicon"),
     multer     = require("multer"),
-    mongoose   = require("mongoose");
+    mongoose   = require("mongoose"),
+    methodOverride = require("method-override");
 
 mongoose.connect("mongodb://localhost:27017/lightbulb", {useNewUrlParser: true});
 
@@ -27,6 +28,7 @@ var upload = multer({ storage: storage });
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(favicon(__dirname + '/favicon.ico')); 
 app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 
 
@@ -71,6 +73,27 @@ app.get("/ideas/:id", function(req, res){
         }else{
             res.render("ideas/show", {idea: idea});
         }
+    });
+});
+
+//EDIT
+app.get("/ideas/:id/edit", function(req, res){
+    Idea.findById(req.params.id, function(err, idea){
+        if(err){
+            console.log(err);
+        }else {
+            res.render("ideas/edit", {idea: idea});
+        }
+    });
+});
+
+//DELETE
+app.delete("/ideas/:id", function(req, res){
+    Idea.findByIdAndDelete(req.params.id, function(err){
+        if(err){
+            console.log(err);
+        }
+        res.redirect("/ideas");
     });
 });
 

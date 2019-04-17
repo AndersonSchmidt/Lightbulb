@@ -1,3 +1,8 @@
+::placeholder {
+    color: #efdab9 !important;
+    opacity: 0.6;
+}
+
 li a {
     color: #efdab9 !important;
 }
@@ -40,4 +45,16 @@ div.thumbnail div.caption {
 
 #myMainJumbotron {
     background-color: #574b4f;
+}
+
+.formInput {
+    color: #efdab9 !important;
+    background-color: #343233;
+    border-color: #574b4f
+}
+
+.submitButton {
+    background-color: #efdab9; 
+    color: #343233;
+    border: none
 }
