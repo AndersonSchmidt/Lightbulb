@@ -1,10 +1,11 @@
-var express    = require("express"),
-    app        = express(),
-    bodyParser = require("body-parser"),
-    favicon    = require("express-favicon"),
-    multer     = require("multer"),
-    mongoose   = require("mongoose"),
-    methodOverride = require("method-override");
+var express        = require("express"),
+    app            = express(),
+    bodyParser     = require("body-parser"),
+    favicon        = require("express-favicon"),
+    multer         = require("multer"),
+    mongoose       = require("mongoose"),
+    methodOverride = require("method-override"),
+    fs             = require("fs");
 
 mongoose.connect("mongodb://localhost:27017/lightbulb", {useNewUrlParser: true});
 
@@ -87,12 +88,32 @@ app.get("/ideas/:id/edit", function(req, res){
     });
 });
 
+//UPDATE
+app.put("/ideas/:id", upload.single("image"), function(req, res){
+    if(req.file){
+        req.body.idea.imagePath = req.file.path.replace('public\\', '/');
+    }
+    Idea.findByIdAndUpdate(req.params.id, req.body.idea, function(err, idea){
+        if(err){
+            console.log(err);
+        }else {
+            res.redirect("/ideas/" + req.params.id);
+        }
+    }) ;
+});
+
 //DELETE
 app.delete("/ideas/:id", function(req, res){
-    Idea.findByIdAndDelete(req.params.id, function(err){
+    Idea.findByIdAndDelete(req.params.id, function(err, idea){
         if(err){
             console.log(err);
         }
+
+        fs.unlink("public/" + idea.imagePath, function (err) {
+            if (err) throw err;
+            console.log('File deleted!');
+        });
+
         res.redirect("/ideas");
     });
 });
