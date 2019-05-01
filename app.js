@@ -110,7 +110,14 @@ app.delete("/ideas/:id", function(req, res){
             console.log('File deleted!');
         });
 
-        res.redirect("/ideas");
+        Comment.deleteMany({_id: { $in: idea.comments }}, function(err, comment){
+            if(err){
+                console.log(err);
+            }else{
+                res.redirect("/ideas");
+            }
+        })
+
     });
 });
 
