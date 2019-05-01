@@ -64,3 +64,22 @@ div.thumbnail div.caption {
     color: #efdab9;
     border: none
 }
+
+#burgerButton {
+    border-color: #efdab9;
+}
+
+.indexIdeaImg {
+    width: 100%;
+    border-radius: 5px 5px 0  0; 
+    max-height: 300px
+}
+
+#showIdeaImg {
+    width: 100%; 
+    border-radius: 5px 5px 0  0
+}
+
+#commentsLine{
+   border-top: 1px solid #574b4f
+}

@@ -1,7 +1,7 @@
 <% include ../partials/header.ejs %>
 
     <div class="row justify-content-center">
-        <h1 style="text-align: center">Edit Comment</h1>
+        <h1 class="text-center">Edit Comment</h1>
         <br>
         <div class="col-md-4 col-md-offset-4">
             <form action="/ideas/<%= idea_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
