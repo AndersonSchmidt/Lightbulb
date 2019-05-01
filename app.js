@@ -5,16 +5,12 @@ var express        = require("express"),
     multer         = require("multer"),
     mongoose       = require("mongoose"),
     methodOverride = require("method-override"),
-    fs             = require("fs");
+    fs             = require("fs"),
+    Idea           = require("./models/idea");
+    Comment        = require("./models/comment");
 
 mongoose.connect("mongodb://localhost:27017/lightbulb", {useNewUrlParser: true});
 
-var ideaSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    imagePath: String
-});
-var Idea = new mongoose.model("Idea", ideaSchema);
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -35,7 +31,7 @@ app.set("view engine", "ejs");
 
 //MAIN PAGE
 app.get("/", function(req, res){
-    res.send("It works");
+    res.redirect("/ideas");
 });
 
 //INDEX - ALL IDEAS
@@ -49,12 +45,12 @@ app.get("/ideas", function(req, res){
     });
 });
 
-//NEW
+//NEW IDEA
 app.get("/ideas/new", function(req, res){
     res.render("ideas/new");
 });
 
-//CREATE
+//CREATE IDEA
 app.post("/ideas", upload.single("image"), function(req, res){
     req.body.idea.imagePath = req.file.path.replace('public\\', '/');
     Idea.create(req.body.idea, function(err, idea){
@@ -66,9 +62,9 @@ app.post("/ideas", upload.single("image"), function(req, res){
     });
 });
 
-//SHOW
+//SHOW IDEAS
 app.get("/ideas/:id", function(req, res){
-    Idea.findById(req.params.id, function(err, idea){
+    Idea.findById(req.params.id).populate("comments").exec(function(err, idea){
         if(err){
             console.log(err);
         }else{
@@ -77,7 +73,7 @@ app.get("/ideas/:id", function(req, res){
     });
 });
 
-//EDIT
+//EDIT IDEA
 app.get("/ideas/:id/edit", function(req, res){
     Idea.findById(req.params.id, function(err, idea){
         if(err){
@@ -88,7 +84,7 @@ app.get("/ideas/:id/edit", function(req, res){
     });
 });
 
-//UPDATE
+//UPDATE IDEA 
 app.put("/ideas/:id", upload.single("image"), function(req, res){
     if(req.file){
         req.body.idea.imagePath = req.file.path.replace('public\\', '/');
@@ -102,7 +98,7 @@ app.put("/ideas/:id", upload.single("image"), function(req, res){
     }) ;
 });
 
-//DELETE
+//DELETE IDEA 
 app.delete("/ideas/:id", function(req, res){
     Idea.findByIdAndDelete(req.params.id, function(err, idea){
         if(err){
@@ -118,6 +114,69 @@ app.delete("/ideas/:id", function(req, res){
     });
 });
 
+//NEW COMMENT
+app.get("/ideas/:id/comments/new", function(req, res){
+    Idea.findById(req.params.id, function(err, idea){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("comments/new", {idea: idea});
+        }
+    });
+});
+
+//CREATE COMMENT
+app.post("/ideas/:id/comments", function(req, res){
+    Idea.findById(req.params.id, function(err, idea){
+        if(err){
+            console.log(err);
+        }else{
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){
+                    console.log(err);
+                }else{
+                    idea.comments.push(comment);
+                    idea.save();
+                    res.redirect("/ideas/" + req.params.id);
+                }
+            });
+        }
+    });
+}); 
+
+//EDIT COMMENT
+app.get("/ideas/:idea_id/comments/:comment_id/edit", function(req, res){
+    Comment.findById(req.params.comment_id, function(err, comment){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("comments/edit", {idea_id: req.params.idea_id, comment: comment});
+        }
+    });
+});
+
+//UPDATE COMMENT
+app.put("/ideas/:idea_id/comments/:comment_id", function(req, res){
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment){
+        if(err){
+            console.log(err);
+        }else{
+            res.redirect("/ideas/" + req.params.idea_id);
+        }
+    });
+});
+
+//DELETE COMMENT
+app.delete("/ideas/:idea_id/comments/:comment_id", function(req, res){
+    Comment.findByIdAndDelete(req.params.comment_id, function(err){
+        if(err){
+            console.log("err");
+        }else{
+            res.redirect("/ideas/" + req.params.idea_id);
+        }
+    });
+});
+
 app.listen("3000", function(){
-    console.log("The Server is Running");
+    console.log("Lightbulb is Running");
 });

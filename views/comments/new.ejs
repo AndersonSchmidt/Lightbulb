@@ -1,0 +1,25 @@
+<% include ../partials/header.ejs %>
+
+    <div class="row justify-content-center">
+        <h1 style="text-align: center">Create a New Comment for <%= idea.name %></h1>
+        <br>
+        <div class="col-md-4 col-md-offset-4">
+            <form action="/ideas/<%= idea._id %>/comments" method="POST">
+                
+                <div class="form-group">
+                    <input type="text" class="form-control formInput" name="comment[user]" placeholder="User">
+                </div>
+
+                <div class="form-group">
+                    <textarea class="form-control formInput" name="comment[text]" placeholder="Text"></textarea>                    
+                </div>
+            
+                <div class="form-group">
+                        <button class="btn btn-lg btn-block submitButton">Submit</button>
+                </div>
+
+            </form>
+            <a href="/ideas">Go Back</a>
+        </div>
+    </div>
+<% include ../partials/footer %>

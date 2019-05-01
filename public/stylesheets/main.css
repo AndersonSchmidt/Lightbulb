@@ -58,3 +58,9 @@ div.thumbnail div.caption {
     color: #343233;
     border: none
 }
+
+#newCommentButton {
+    background-color: #574b4f;
+    color: #efdab9;
+    border: none
+}
