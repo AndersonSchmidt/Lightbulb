@@ -36,13 +36,27 @@ app.get("/", function(req, res){
 
 //INDEX - ALL IDEAS
 app.get("/ideas", function(req, res){
-    Idea.find(function(err, ideas){
-        if(err){
-            console.log(err);
-        }else{
-            res.render("ideas/index", {ideas: ideas});
-        }
-    });
+    if(req.query.search){
+        function escapeRegex(text) {
+            return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+        };
+        const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}, function(err, ideas){
+            if(err){
+                console.log(err);
+            }else{
+                res.render("ideas/index", {ideas: ideas});
+            }
+        });
+    }else{
+        Idea.find(function(err, ideas){
+            if(err){
+                console.log(err);
+            }else{
+                res.render("ideas/index", {ideas: ideas});
+            }
+        });
+    }
 });
 
 //NEW IDEA

@@ -25,9 +25,17 @@
                     <a class="navbar-brand" href="/ideas">Lightbulb <i class="far fa-lightbulb"></i></a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
+                    <!-- <ul class="nav navbar-nav">
                         <li class=""><a href="/ideas">Home</a></li>
-                    </ul>
+                    </ul> -->
+
+                    <form action="/ideas" method="GET" class="navbar-form navbar-left"  style="border: 0; display: flex;">
+                        <div class="form-group">
+                          <input type="text" class="form-control formInput" style="width: 18em; margin-right: 5px" name="search" placeholder="Search an Idea">
+                        </div>
+                        <button type="submit" class="btn submitButton">Submit</button>
+                    </form>
+
                     <ul class="nav navbar-nav navbar-right">
                         <li class=""><a href="/login">Login</a></li>
                         <li class=""><a href="/register">Sign Up</a></li>
