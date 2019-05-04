@@ -66,7 +66,11 @@ app.get("/ideas/new", function(req, res){
 
 //CREATE IDEA
 app.post("/ideas", upload.single("image"), function(req, res){
+    var date = new Date();
+    req.body.idea.date = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+
     req.body.idea.imagePath = req.file.path.replace('public\\', '/');
+
     Idea.create(req.body.idea, function(err, idea){
         if(err){
             console.log(err);
@@ -148,6 +152,9 @@ app.get("/ideas/:id/comments/new", function(req, res){
 
 //CREATE COMMENT
 app.post("/ideas/:id/comments", function(req, res){
+    var date = new Date();
+    req.body.comment.date = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+   
     Idea.findById(req.params.id, function(err, idea){
         if(err){
             console.log(err);

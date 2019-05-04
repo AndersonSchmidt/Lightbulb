@@ -4,10 +4,16 @@
             <div class="thumbnail">
                 <img src="<%= idea.imagePath %>" class="img-responsive" id="showIdeaImg">
                 <div class="caption">
-                    <h4><a href=""> <%=idea.name %> </a> </h4>
+        
+
+                    <div>
+                        <h4 class="headline"> <%=idea.name %> </h4>
+                        <p class="headline" style="float: right; margin-top: 5px"><%= idea.date %></p>
+                    </div>
+
                     <p> <%= idea.description %></p>
                     <p>
-                        <em> Submitted By Anderson Schmidt </em>
+                        <em> Submitted By <%= idea.user %> </em>
                         <span style="float:right;"> 5 <i class="far fa-lightbulb"></i> </span>
                     </p>
                     <a href="/ideas/<%=idea._id%>/edit" class="btn btn-warning">Edit</a>
@@ -24,7 +30,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <strong><%= comment.user %></strong>
-                        <span class="pull-right"> 10 days ago </span>
+                        <span class="pull-right"> <%= comment.date %> </span>
                         <p>
                             <%= comment.text %>
                         </p>           

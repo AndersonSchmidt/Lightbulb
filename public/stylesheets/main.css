@@ -83,3 +83,7 @@ div.thumbnail div.caption {
 #commentsLine{
    border-top: 1px solid #574b4f
 }
+
+.headline {
+    display: inline-block;
+}
