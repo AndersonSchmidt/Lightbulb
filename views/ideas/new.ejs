@@ -23,12 +23,13 @@
                     <input type="file" class="btn btn-block formInput" id="image" name="image" accept="image/*" required style="display: none">
                 </div>
 
+                <!-- Adding the file name to the upload image label-->
                 <script type="text/javascript">
                     var input = document.getElementById('image');
                     var label = document.getElementById('imageLabel');
 
                     input.addEventListener('change', function(){
-                        label.textContent = this.value;
+                        label.textContent = this.value.slice(12);
                     });
                 </script>
             
