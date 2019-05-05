@@ -29,7 +29,12 @@
                     var label = document.getElementById('imageLabel');
 
                     input.addEventListener('change', function(){
-                        label.textContent = this.value.slice(12);
+                        if(this.value == ""){
+                            label.textContent = "You must upload an Image!";
+                        }else{
+                            label.textContent = this.value.slice(12);
+                        }
+                        
                     });
                 </script>
             

@@ -5,11 +5,15 @@
                 <img src="<%= idea.imagePath %>" class="img-responsive" id="showIdeaImg">
                 <div class="caption">
         
-
-                    <div>
+                    <!-- <div>
                         <h4 class="headline"> <%=idea.name %> </h4>
-                        <p class="headline" style="float: right; margin-top: 5px"><%= idea.date %></p>
-                    </div>
+                        <p class="headline" style="float: right; margin-top: 5px"><%= idea.date.split(" ")[0] %></p>
+                    </div> -->
+
+                    <p> 
+                        <span style="font-size: 20px">  <%=idea.name %> </span>
+                        <span class="pull-right"> <%= idea.date.split(" ")[0] %> </span>
+                    </p>
 
                     <p> <%= idea.description %></p>
                     <p>
