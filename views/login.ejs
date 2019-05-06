@@ -1,0 +1,25 @@
+<% include ./partials/header.ejs %>
+
+    <div class="row justify-content-center">
+        <h1 class="text-center">Login</h1>
+        <br>
+        <div class="col-md-4 col-md-offset-4">
+            <form action="/login" method="POST">
+                
+                <div class="form-group">
+                    <input type="text" class="form-control formInput" name="username" placeholder="Username">
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control formInput" name="password" placeholder="Password">
+                </div>
+            
+                <div class="form-group">
+                        <button class="btn btn-lg btn-block submitButton">Login</button>
+                </div>
+
+            </form>
+            <a href="javascript:history.back()">Go Back</a>
+        </div>
+    </div>
+<% include ./partials/footer %>
