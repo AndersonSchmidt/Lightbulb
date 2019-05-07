@@ -7,15 +7,15 @@
             <form action="/ideas/<%=idea._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
-                    <input type="text" class="form-control formInput" name="idea[name]" value="<%= idea.name %>">
+                    <input type="text" class="form-control formInput" name="idea[name]" placeholder="Name" value="<%= idea.name %>">
                 </div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control formInput" name="idea[user]" value="<%= idea.user %>">
+                    <input type="text" class="form-control formInput" name="idea[user]" placeholder="User" value="<%= idea.user %>">
                 </div>
 
                 <div class="form-group">
-                    <textarea class="form-control formInput" name="idea[description]"><%= idea.description %></textarea>                    
+                    <textarea class="form-control formInput" name="idea[description]" placeholder="Description"><%= idea.description %></textarea>                    
                 </div>
 
                 <div class="form-group">
