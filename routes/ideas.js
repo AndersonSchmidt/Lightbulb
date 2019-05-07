@@ -55,6 +55,12 @@ router.post("/ideas", isLoggedIn, upload.single("image"), function(req, res){
 
     req.body.idea.imagePath = req.file.path.replace('public\\', '/');
 
+    var user = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    req.body.idea.user = user;
+
     Idea.create(req.body.idea, function(err, idea){
         if(err){
             console.log(err);

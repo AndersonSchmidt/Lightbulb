@@ -17,7 +17,7 @@
 
                     <p> <%= idea.description %></p>
                     <p>
-                        <em> Submitted By <%= idea.user %> </em>
+                        <em> Submitted By <%= idea.user.username %> </em>
                         <span style="float:right;"> 5 <i class="far fa-lightbulb"></i> </span>
                     </p>
                     <a href="/ideas/<%=idea._id%>/edit" class="btn btn-warning" style="border: none; color: #574b4f">Edit</a>
@@ -33,7 +33,7 @@
                 <% idea.comments.forEach(function(comment){ %>
                 <div class="row">
                     <div class="col-md-12">
-                        <strong><%= comment.user %></strong>
+                        <strong><%= comment.user.username %></strong>
                         <span class="pull-right"> <%= comment.date %> </span>
                         <p>
                             <%= comment.text %>
