@@ -39,15 +39,17 @@
                         <span class="pull-right"> <%= comment.date %> </span>
                         <p>
                             <%= comment.text %>
-                        </p>           
-                        <a class="btn btn-xs btn-warning"
-                           style="border: none; color: #574b4f"
-                           href="/ideas/<%=idea._id%>/comments/<%=comment._id%>/edit">
-                           Edit
-                        </a>
-                        <form action="/ideas/<%=idea._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST" class="delete-form" style="display: inline">
-                            <input type="submit" class="btn btn-xs btn-danger" style="border: none; color: #574b4f" value="Delete">
-                        </form>
+                        </p>
+                        <% if(currentUser && comment.user.id.equals(currentUser._id)){ %>           
+                            <a class="btn btn-xs btn-warning"
+                            style="border: none; color: #574b4f"
+                            href="/ideas/<%=idea._id%>/comments/<%=comment._id%>/edit">
+                            Edit
+                            </a>
+                            <form action="/ideas/<%=idea._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST" class="delete-form" style="display: inline">
+                                <input type="submit" class="btn btn-xs btn-danger" style="border: none; color: #574b4f" value="Delete">
+                            </form>
+                        <% } %>
                     </div>
                 </div>
                 <br>
