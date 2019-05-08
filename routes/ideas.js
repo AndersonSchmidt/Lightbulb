@@ -82,7 +82,7 @@ router.get("/ideas/:id", function(req, res){
 });
 
 // EDIT IDEA
-router.get("/ideas/:id/edit", function(req, res){
+router.get("/ideas/:id/edit", checkIdeaOwner, function(req, res){
     Idea.findById(req.params.id, function(err, idea){
         if(err){
             console.log(err);
@@ -93,7 +93,7 @@ router.get("/ideas/:id/edit", function(req, res){
 });
 
 // UPDATE IDEA 
-router.put("/ideas/:id", upload.single("image"), function(req, res){
+router.put("/ideas/:id", checkIdeaOwner, upload.single("image"), function(req, res){
     if(req.file){
         req.body.idea.imagePath = req.file.path.replace('public\\', '/');
     }
@@ -107,7 +107,7 @@ router.put("/ideas/:id", upload.single("image"), function(req, res){
 });
 
 // DELETE IDEA 
-router.delete("/ideas/:id", function(req, res){
+router.delete("/ideas/:id", checkIdeaOwner, function(req, res){
     Idea.findByIdAndDelete(req.params.id, function(err, idea){
         if(err){
             console.log(err);
@@ -135,6 +135,21 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function checkIdeaOwner(req, res, next){
+    if(req.isAuthenticated()){
+        Idea.findById(req.params.id, function(err, idea){
+            if(idea.user.id.equals(req.user._id)){
+                next();
+            }else{
+                res.redirect("back");
+            }
+        });
+
+    }else{
+        res.redirect("back");
+    }
 }
 
 module.exports = router;
