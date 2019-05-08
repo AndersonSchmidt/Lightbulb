@@ -1,11 +1,12 @@
-var express = require("express");
-var router  = express.Router();
+var express    = require("express"),
+    Idea       = require("../models/idea"),
+    Comment    = require("../models/comment"),
+    middleware = require("../middleware");
 
-var Idea = require("../models/idea");
-var Comment = require("../models/comment");
+var router = express.Router();
 
-//NEW COMMENT
-router.get("/ideas/:id/comments/new", isLoggedIn, function(req, res){
+// NEW COMMENT
+router.get("/ideas/:id/comments/new", middleware.isLoggedIn, function(req, res){
     Idea.findById(req.params.id, function(err, idea){
         if(err){
             console.log(err);
@@ -15,8 +16,8 @@ router.get("/ideas/:id/comments/new", isLoggedIn, function(req, res){
     });
 });
 
-//CREATE COMMENT
-router.post("/ideas/:id/comments", isLoggedIn, function(req, res){
+// CREATE COMMENT
+router.post("/ideas/:id/comments", middleware.isLoggedIn, function(req, res){
     var date = new Date();
     req.body.comment.date = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
    
@@ -40,8 +41,8 @@ router.post("/ideas/:id/comments", isLoggedIn, function(req, res){
     });
 }); 
 
-//EDIT COMMENT
-router.get("/ideas/:idea_id/comments/:comment_id/edit", checkCommentOwner, function(req, res){
+// EDIT COMMENT
+router.get("/ideas/:idea_id/comments/:comment_id/edit", middleware.checkCommentOwner, function(req, res){
     Comment.findById(req.params.comment_id, function(err, comment){
         if(err){
             console.log(err);
@@ -51,8 +52,8 @@ router.get("/ideas/:idea_id/comments/:comment_id/edit", checkCommentOwner, funct
     });
 });
 
-//UPDATE COMMENT
-router.put("/ideas/:idea_id/comments/:comment_id", checkCommentOwner, function(req, res){
+// UPDATE COMMENT
+router.put("/ideas/:idea_id/comments/:comment_id", middleware.checkCommentOwner, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment){
         if(err){
             console.log(err);
@@ -62,8 +63,8 @@ router.put("/ideas/:idea_id/comments/:comment_id", checkCommentOwner, function(r
     });
 });
 
-//DELETE COMMENT
-router.delete("/ideas/:idea_id/comments/:comment_id", checkCommentOwner, function(req, res){
+// DELETE COMMENT
+router.delete("/ideas/:idea_id/comments/:comment_id", middleware.checkCommentOwner, function(req, res){
     Comment.findByIdAndDelete(req.params.comment_id, function(err){
         if(err){
             console.log("err");
@@ -72,32 +73,5 @@ router.delete("/ideas/:idea_id/comments/:comment_id", checkCommentOwner, functio
         }
     });
 });
-
-// IS LOGGEDIN MIDDLEWARE
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-
-// CHECK COMMENT OWNER MIDDLEWARE
-function checkCommentOwner(req, res, next){
-    if(req.isAuthenticated()){
-        Comment.findById(req.params.comment_id, function(err, comment){
-            if(err){
-                console.log(err);
-            }else{
-                if(comment.user.id.equals(req.user._id)){
-                    next();
-                }else{
-                    res.redirect("back");
-                }
-            }
-        });
-    }else{
-        res.redirect("/login");
-    }
-}
 
 module.exports = router;

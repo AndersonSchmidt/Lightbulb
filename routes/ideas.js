@@ -1,11 +1,12 @@
-var express = require("express"),
-    multer  = require("multer"),
-    fs      = require("fs"),
-    Idea    = require("../models/idea"),
-    Comment = require("../models/comment");
-    
+var express    = require("express"),
+    multer     = require("multer"),
+    fs         = require("fs"),
+    Idea       = require("../models/idea"),
+    Comment    = require("../models/comment"),
+    middleware = require("../middleware");
 
-var router  = express.Router();
+var router = express.Router();
+    
 
 // MULTER SETTINGS
 var storage = multer.diskStorage({
@@ -44,12 +45,12 @@ router.get("/ideas", function(req, res){
 });
 
 // NEW IDEA
-router.get("/ideas/new", isLoggedIn, function(req, res){
+router.get("/ideas/new", middleware.isLoggedIn, function(req, res){
     res.render("ideas/new");
 });
 
 // CREATE IDEA
-router.post("/ideas", isLoggedIn, upload.single("image"), function(req, res){
+router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(req, res){
     var date = new Date();
     req.body.idea.date = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
 
@@ -82,7 +83,7 @@ router.get("/ideas/:id", function(req, res){
 });
 
 // EDIT IDEA
-router.get("/ideas/:id/edit", checkIdeaOwner, function(req, res){
+router.get("/ideas/:id/edit", middleware.checkIdeaOwner, function(req, res){
     Idea.findById(req.params.id, function(err, idea){
         if(err){
             console.log(err);
@@ -93,7 +94,7 @@ router.get("/ideas/:id/edit", checkIdeaOwner, function(req, res){
 });
 
 // UPDATE IDEA 
-router.put("/ideas/:id", checkIdeaOwner, upload.single("image"), function(req, res){
+router.put("/ideas/:id", middleware.checkIdeaOwner, upload.single("image"), function(req, res){
     if(req.file){
         req.body.idea.imagePath = req.file.path.replace('public\\', '/');
     }
@@ -107,7 +108,7 @@ router.put("/ideas/:id", checkIdeaOwner, upload.single("image"), function(req, r
 });
 
 // DELETE IDEA 
-router.delete("/ideas/:id", checkIdeaOwner, function(req, res){
+router.delete("/ideas/:id", middleware.checkIdeaOwner, function(req, res){
     Idea.findByIdAndDelete(req.params.id, function(err, idea){
         if(err){
             console.log(err);
@@ -128,28 +129,5 @@ router.delete("/ideas/:id", checkIdeaOwner, function(req, res){
 
     });
 });
-
-// IS LOGGEDIN MIDDLEWARE
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-
-function checkIdeaOwner(req, res, next){
-    if(req.isAuthenticated()){
-        Idea.findById(req.params.id, function(err, idea){
-            if(idea.user.id.equals(req.user._id)){
-                next();
-            }else{
-                res.redirect("back");
-            }
-        });
-
-    }else{
-        res.redirect("back");
-    }
-}
 
 module.exports = router;

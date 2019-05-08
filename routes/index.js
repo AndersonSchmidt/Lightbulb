@@ -3,7 +3,7 @@ var router   = express.Router();
 var User     = require("../models/user");
 var passport = require("passport");
 
-//MAIN PAGE
+// MAIN PAGE
 router.get("/", function(req, res){
     res.redirect("/ideas");
 });
