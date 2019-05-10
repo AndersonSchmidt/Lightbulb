@@ -38,6 +38,9 @@ router.get("/ideas", function(req, res){
             if(err){
                 console.log(err);
             }else{
+                ideas.sort(function(a, b){
+                    return b.likes.length - a.likes.length;
+                })
                 res.render("ideas/index", {ideas: ideas});
             }
         });
