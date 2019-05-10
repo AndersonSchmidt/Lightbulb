@@ -21,10 +21,11 @@
                             <em>by: <%= idea.user.username %> </em>
                             
                             <span style="float:right;"> 
-                                <%= idea.likes.length %> 
-                                <label for="sendLike"><i class="far fa-lightbulb"></i></label>             
-                                <form action="/ideas/<%= idea.id %>/likes" id="like" method="POST" style="display: none">
-                                    <input type="submit" id="sendLike">
+                                <%= idea.likes.length %>
+                                <label for="like_<%=idea.id %>"><i class="far fa-lightbulb"></i></label>             
+                                <form action="/ideas/<%= idea.id %>/likes" method="POST" style="display: none">
+                                    <!-- submit id needs to be unic because it's inside a for loop -->
+                                    <input type="submit" id="like_<%=idea.id %>">
                                 </form> 
                             </span>                            
                         </p>
