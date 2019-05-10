@@ -130,4 +130,36 @@ router.delete("/ideas/:id", middleware.checkIdeaOwner, function(req, res){
     });
 });
 
+router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
+    Idea.findById(req.params.id, function(err, idea){
+        if(err){
+            console.log(err);
+        }else{
+            var like = {
+                user: {
+                    id: req.user.id
+                }
+            }
+
+            var isLiked = false;
+
+            idea.likes.forEach(function(like){
+                if(like.user.id.equals(req.user.id)){
+                    var index = idea.likes.indexOf(like);
+                    idea.likes.splice(index, 1);
+                    isLiked = true;
+                }
+            });
+
+            if(!isLiked){
+                idea.likes.push(like);
+            }
+
+            idea.save();
+
+            res.redirect("back");
+        }
+    });
+});
+
 module.exports = router;

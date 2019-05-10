@@ -17,6 +17,16 @@ var ideaSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }
+    ],
+    likes: [
+        {
+            user: {
+                id: {
+                    type: mongoose.Schema.ObjectId,
+                    ref: "User"
+                }
+            }
+        }
     ]
 });
 module.exports = mongoose.model("Idea", ideaSchema);

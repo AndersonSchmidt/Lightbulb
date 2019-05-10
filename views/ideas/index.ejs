@@ -13,15 +13,22 @@
                 <div class="thumbnail">
                     <a href="/ideas/<%= idea.id %>">
                         <img src="<%= idea.imagePath %>" class="indexIdeaImg">
-                        <div class="caption">
-                            <h4> <%= idea.name %> </h4>
-                            <br>                         
-                            <p class="text-left" style="margin: 0">
-                                <em>by: <%= idea.user.username %> </em>
-                                <span style="float:right;"> 5 <i class="far fa-lightbulb"></i> </span>
-                            </p>
-                        </div>
                     </a>
+                    <div class="caption">
+                        <h4> <%= idea.name %> </h4>
+                        <br>                         
+                        <p class="text-left" style="margin: 0">
+                            <em>by: <%= idea.user.username %> </em>
+                            
+                            <span style="float:right;"> 
+                                <%= idea.likes.length %> 
+                                <label for="sendLike"><i class="far fa-lightbulb"></i></label>             
+                                <form action="/ideas/<%= idea.id %>/likes" id="like" method="POST" style="display: none">
+                                    <input type="submit" id="sendLike">
+                                </form> 
+                            </span>                            
+                        </p>
+                    </div>
                 </div>
             </div>
 
