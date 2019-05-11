@@ -138,12 +138,6 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
         if(err){
             console.log(err);
         }else{
-            var like = {
-                user: {
-                    id: req.user.id
-                }
-            }
-
             var isLiked = false;
 
             idea.likes.forEach(function(like){
@@ -155,6 +149,11 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
             });
 
             if(!isLiked){
+                var like = {
+                    user: {
+                        id: req.user.id
+                    }
+                }
                 idea.likes.push(like);
             }
 
