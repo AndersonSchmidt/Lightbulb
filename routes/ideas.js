@@ -30,8 +30,8 @@ router.get("/ideas", function(req, res){
             if(err){
                 console.log(err);
             }else{
-                 //Checking what idea the current liked (to change de lightbulb icon)
-                 if(req.user){
+                //Checking what idea the current liked (to change de lightbulb icon)
+                if(req.user){
                     ideas.forEach(function(idea){
                         idea.likes.forEach(function(like){
                             if(like.user.id.equals(req.user.id)){
@@ -40,6 +40,10 @@ router.get("/ideas", function(req, res){
                         })
                     });
                 }
+                //Sorting ideas by descending likes
+                ideas.sort(function(a, b){
+                    return b.likes.length - a.likes.length;
+                })
                 res.render("ideas/index", {ideas: ideas});
             }
         });
@@ -58,6 +62,7 @@ router.get("/ideas", function(req, res){
                         })
                     });
                 }
+                //Sorting ideas by descending likes
                 ideas.sort(function(a, b){
                     return b.likes.length - a.likes.length;
                 })
