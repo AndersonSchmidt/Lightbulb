@@ -30,6 +30,16 @@ router.get("/ideas", function(req, res){
             if(err){
                 console.log(err);
             }else{
+                 //Checking what idea the current liked (to change de lightbulb icon)
+                 if(req.user){
+                    ideas.forEach(function(idea){
+                        idea.likes.forEach(function(like){
+                            if(like.user.id.equals(req.user.id)){
+                                idea.isLiked = true;
+                            }
+                        })
+                    });
+                }
                 res.render("ideas/index", {ideas: ideas});
             }
         });
@@ -38,6 +48,16 @@ router.get("/ideas", function(req, res){
             if(err){
                 console.log(err);
             }else{
+                //Checking what idea the current User liked (to change de lightbulb icon)
+                if(req.user){
+                    ideas.forEach(function(idea){
+                        idea.likes.forEach(function(like){
+                            if(like.user.id.equals(req.user.id)){
+                                idea.isLiked = true;
+                            }
+                        })
+                    });
+                }
                 ideas.sort(function(a, b){
                     return b.likes.length - a.likes.length;
                 })
@@ -80,6 +100,14 @@ router.get("/ideas/:id", function(req, res){
         if(err){
             console.log(err);
         }else{
+             //Checking if the current User liked this idea (to change de lightbulb icon)
+             if(req.user){
+                idea.likes.forEach(function(like){
+                    if(like.user.id.equals(req.user.id)){
+                        idea.isLiked = true;
+                    }
+                });
+            }
             res.render("ideas/show", {idea: idea});
         }
     });

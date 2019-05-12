@@ -20,7 +20,13 @@
                         <em> Submitted By <%= idea.user.username %> </em>
                         <span style="float:right;">
                             <%= idea.likes.length %>  
-                            <label for="sendLike"><i class="far fa-lightbulb"></i></label>             
+                            <label for="sendLike">
+                                <% if(idea.isLiked){ %>
+                                    <i class="fas fa-lightbulb"></i>                                      
+                                <% } else { %>
+                                    <i class="far fa-lightbulb"></i>
+                                <% } %>
+                            </label>             
                             <form action="/ideas/<%= idea.id %>/likes" id="like" method="POST" style="display: none">
                                 <input type="submit" id="sendLike">
                             </form>                                            
