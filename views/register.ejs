@@ -4,7 +4,7 @@
         <h1 class="text-center">Register to Lightbulb!</h1>
         <br>
         <div class="col-md-4 col-md-offset-4">
-            <form action="/register" method="POST">
+            <form action="/register" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
                     <input type="text" class="form-control formInput" name="username" placeholder="Username">
@@ -13,6 +13,26 @@
                 <div class="form-group">
                     <input type="password" class="form-control formInput" name="password" placeholder="Password">
                 </div>
+
+                <div class="form-group">
+                    <label id="imageLabel" class="btn btn-block formInput" for="image"> Avatar <i class="fas fa-cloud-upload-alt"></i></label>
+                    <input type="file" class="btn btn-block formInput" id="image" name="image" accept="image/*" required style="display: none">
+                </div>
+
+                <!-- Adding the file name to the upload image label-->
+                <script type="text/javascript">
+                    var input = document.getElementById('image');
+                    var label = document.getElementById('imageLabel');
+
+                    input.addEventListener('change', function(){
+                        if(this.value == ""){
+                            label.textContent = "You must upload an Image!";
+                        }else{
+                            label.textContent = this.value.slice(12);
+                        }
+                        
+                    });
+                </script>
             
                 <div class="form-group">
                         <button class="btn btn-lg btn-block submitButton">Sign Up</button>

@@ -1,0 +1,22 @@
+<% include ../partials/header.ejs %>
+
+<div class="row">
+    <div class="col-md-4">
+        <h1><%= user.username %></h1>
+        <div class="thumbnail">
+            <img src="<%= user.avatarPath %>" style="border-radius: 5px">
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h3><%= user.username %>'s ideas</h3>
+        <ul>
+            <% ideas.forEach(function(idea){ %>
+                <li><a href="/ideas/<%= idea.id %>"> <%= idea.name %> </a></li>
+            <% }) %>
+        </ul>
+    </div>
+
+</div>
+
+<% include ../partials/footer.ejs %>

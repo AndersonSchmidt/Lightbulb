@@ -17,7 +17,7 @@
 
                     <p> <%= idea.description %></p>
                     <p>
-                        <em> Submitted By <%= idea.user.username %> </em>
+                        <em> Submitted By <a href="/users/<%= idea.user.id %>"><%= idea.user.username %> </a></em>
                         <span style="float:right;">
                             <%= idea.likes.length %>  
                             <label for="sendLike">

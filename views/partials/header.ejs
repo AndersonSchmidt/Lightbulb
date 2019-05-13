@@ -41,7 +41,7 @@
                             <li class=""><a href="/login">Login</a></li>
                             <li class=""><a href="/register">Sign Up</a></li>
                         <% }else{ %>
-                            <li class=""><a href="#"><%= currentUser.username %></a></li>
+                            <li class=""><a href="/users/<%= currentUser.id %>"><%= currentUser.username %></a></li>
                             <li class=""><a href="/logout">Logout</a></li>
                         <% } %>
                     </ul>                    
