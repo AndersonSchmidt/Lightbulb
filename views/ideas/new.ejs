@@ -28,9 +28,12 @@
                         if(this.value == ""){
                             label.textContent = "You must upload an Image!";
                         }else{
-                            label.textContent = this.value.slice(12);
-                        }
-                        
+                            if(this.value.length > 50){
+                                label.textContent = this.value.slice(12, 50) + "...";
+                            }else{
+                                label.textContent = this.value.slice(12);
+                            }                         
+                        }    
                     });
                 </script>
             
