@@ -72,7 +72,7 @@ router.get("/users/:id", function(req, res){
         if(err){
 
         }else{
-            Idea.find({'user.id': ObjectId(req.params.id)}, function(err, ideas){
+            Idea.find({user: ObjectId(req.params.id)}, function(err, ideas){
                 if(err){
                     console.log(err);
                 }else{

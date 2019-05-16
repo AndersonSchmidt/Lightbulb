@@ -26,7 +26,7 @@ router.get("/ideas", function(req, res){
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         };
         const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}, function(err, ideas){
+        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).populate("user").exec(function(err, ideas){
             if(err){
                 console.log(err);
             }else{
@@ -48,7 +48,7 @@ router.get("/ideas", function(req, res){
             }
         });
     }else{
-        Idea.find(function(err, ideas){
+        Idea.find().populate("user").exec(function(err, ideas){
             if(err){
                 console.log(err);
             }else{
@@ -84,11 +84,7 @@ router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(re
 
     req.body.idea.imagePath = req.file.path.replace('public\\', '/');
 
-    var user = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    req.body.idea.user = user;
+    req.body.idea.user = req.user._id;
 
     Idea.create(req.body.idea, function(err, idea){
         if(err){
@@ -101,7 +97,7 @@ router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(re
 
 // SHOW IDEA
 router.get("/ideas/:id", function(req, res){
-    Idea.findById(req.params.id).populate("comments").exec(function(err, idea){
+    Idea.findById(req.params.id).populate("comments").populate("user").exec(function(err, idea){
         if(err){
             console.log(err);
         }else{

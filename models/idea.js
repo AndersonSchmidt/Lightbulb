@@ -6,11 +6,8 @@ var ideaSchema = new mongoose.Schema({
     imagePath: String,
     date: String,
     user: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        username: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     comments: [
         {
