@@ -97,7 +97,7 @@ router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(re
 
 // SHOW IDEA
 router.get("/ideas/:id", function(req, res){
-    Idea.findById(req.params.id).populate("comments").populate("user").exec(function(err, idea){
+    Idea.findById(req.params.id).populate("user").populate({path: 'comments', populate: {path: 'user'}}).exec(function(err, idea){
         if(err){
             console.log(err);
         }else{

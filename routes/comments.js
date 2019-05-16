@@ -29,8 +29,7 @@ router.post("/ideas/:id/comments", middleware.isLoggedIn, function(req, res){
                 if(err){
                     console.log(err);
                 }else{
-                    comment.user.id = req.user._id;
-                    comment.user.username = req.user.username;
+                    comment.user = req.user._id;
                     comment.save();
                     idea.comments.push(comment);
                     idea.save();

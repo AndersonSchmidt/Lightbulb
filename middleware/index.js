@@ -32,7 +32,7 @@ middlewareObj.checkCommentOwner = function(req, res, next){
             if(err){
                 console.log(err);
             }else{
-                if(comment.user.id.equals(req.user._id) || req.user.isAdmin){
+                if(comment.user.equals(req.user._id) || req.user.isAdmin){
                     next();
                 }else{
                     res.redirect("back");
