@@ -9,9 +9,10 @@ var express        = require("express"),
     LocalStrategy  = require("passport-local"),
     User           = require("./models/user");
 
-var ideaRoutes = require("./routes/ideas"),
+var ideaRoutes    = require("./routes/ideas"),
     commentRoutes = require("./routes/comments"),
-    indexRoutes = require("./routes/index");
+    userRoutes    = require("./routes/users"),
+    indexRoutes   = require("./routes/index");
 
 // MONGO CONNECTION
 mongoose.connect("mongodb://localhost:27017/lightbulb", {useNewUrlParser: true});
@@ -44,6 +45,7 @@ app.use(function(req, res, next){
 // ROUTES
 app.use(ideaRoutes);
 app.use(commentRoutes);
+app.use(userRoutes);
 app.use(indexRoutes);
 
 

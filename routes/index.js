@@ -2,9 +2,7 @@ var express  = require("express");
 var router   = express.Router();
 var multer   = require("multer");
 var User     = require("../models/user");
-var Idea     = require("../models/idea");
 var passport = require("passport");
-var ObjectId = require('mongoose').Types.ObjectId;
 
 // MULTER SETTINGS
 var storage = multer.diskStorage({
@@ -59,28 +57,12 @@ router.post("/login", passport.authenticate("local", {
     failureRedirect: "/login"
 }), function(req, res){
     
-})
+});
 
 // Logout route
 router.get("/logout", function(req, res){
     req.logout();
     res.redirect("/ideas");
 });
-
-router.get("/users/:id", function(req, res){
-    User.findById(req.params.id, function(err, user){
-        if(err){
-
-        }else{
-            Idea.find({user: ObjectId(req.params.id)}, function(err, ideas){
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render("users/show", {user: user, ideas: ideas});
-                }
-            });
-        }
-    })
-}); 
 
 module.exports = router;
