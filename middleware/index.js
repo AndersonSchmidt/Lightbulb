@@ -8,6 +8,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
+    req.flash("error", "Please Login First!");
     res.redirect("/login");
 }
 
@@ -22,7 +23,8 @@ middlewareObj.checkIdeaOwner = function(req, res, next){
         });
 
     }else{
-        res.redirect("back");
+        req.flash("error", "You need to be logged in to do that");
+        res.redirect("/login");
     }
 }
 
@@ -40,6 +42,7 @@ middlewareObj.checkCommentOwner = function(req, res, next){
             }
         });
     }else{
+        req.flash("error", "You need to be logged in to do that");
         res.redirect("/login");
     }
 }

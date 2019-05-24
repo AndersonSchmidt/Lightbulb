@@ -3,6 +3,7 @@ var express        = require("express"),
     bodyParser     = require("body-parser"),
     favicon        = require("express-favicon"),
     mongoose       = require("mongoose"),
+    flash          = require("connect-flash"),
     methodOverride = require("method-override"),
     expressSession = require("express-session"),
     passport       = require("passport"),
@@ -23,6 +24,7 @@ app.use(favicon(__dirname + '/favicon.ico'));
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
+app.use(flash());
 
 // AUTHENTICATION SETTINGS
 app.use(expressSession({
@@ -39,6 +41,8 @@ passport.deserializeUser(User.deserializeUser());
 // Custom Middleware for every template
 app.use(function(req, res, next){
     res.locals.currentUser =  req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

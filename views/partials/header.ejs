@@ -50,3 +50,15 @@
         </nav>
 
         <div class="container">
+
+            <% if(error && error.length){ %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length){ %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+            <% } %>
+        
