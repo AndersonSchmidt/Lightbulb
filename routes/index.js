@@ -31,7 +31,7 @@ router.get("/register", function(req, res){
 
 // Sign Up logic
 router.post("/register", upload.single("image"), function(req, res){
-    var newUser = new User({username: req.body.username});
+    var newUser = new User({username: req.body.username, bio: req.body.bio});
 
     newUser.avatarPath = req.file.path.replace('public\\', '/');
 

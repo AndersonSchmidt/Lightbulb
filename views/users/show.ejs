@@ -6,6 +6,7 @@
         <div class="thumbnail">
             <img src="<%= user.avatarPath %>" style="border-radius: 5px">
         </div>
+        <p><%= user.bio %></p>
         <% if(currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
             <a href="/users/<%=user.id%>/edit" class="btn btn-warning" style="border: none; color: #574b4f">Edit</a>
             <form action="/users/<%=user.id%>?_method=DELETE" method="POST" class="delete-form" style="display: inline">
