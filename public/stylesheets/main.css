@@ -98,3 +98,7 @@ input:-webkit-autofill  {
     -webkit-box-shadow: 0 0 0 30px #343233 inset !important;
     -webkit-text-fill-color: #efdab9;
 }
+
+label i.fa-lightbulb:hover {
+    cursor: pointer;
+}
