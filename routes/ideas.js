@@ -21,53 +21,74 @@ var upload = multer({ storage: storage });
 
 // SHOW IDEAS
 router.get("/ideas", function(req, res){
+    var perPage = 8;
+    var pageQuery = parseInt(req.query.page);
+    var page = pageQuery ? pageQuery : 1;
+    var noMatch = null;
+
     if(req.query.search){
         function escapeRegex(text) {
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         };
         const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).populate("user").exec(function(err, ideas){
-            if(err){
-                console.log(err);
-            }else{
-                //Checking what idea the current liked (to change de lightbulb icon)
-                if(req.user){
-                    ideas.forEach(function(idea){
-                        idea.likes.forEach(function(like){
-                            if(like.user.id.equals(req.user.id)){
-                                idea.isLiked = true;
-                            }
-                        })
+        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
+            Idea.countDocuments({$or: [{name: searchRegex}, {description: searchRegex}]}).exec(function (err, count) {
+                if(err){
+                    console.log(err);
+                }else{
+                    //Checking what idea the current liked (to change de lightbulb icon)
+                    if(req.user){
+                        ideas.forEach(function(idea){
+                            idea.likes.forEach(function(like){
+                                if(like.user.id.equals(req.user.id)){
+                                    idea.isLiked = true;
+                                }
+                            })
+                        });
+                    }
+                    //Sorting ideas by descending likes
+                    ideas.sort(function(a, b){
+                        return b.likes.length - a.likes.length;
+                    })
+                    res.render("ideas/index", {
+                        ideas: ideas,
+                        current: page,
+                        pages: Math.ceil(count / perPage),
+                        noMatch: noMatch,
+                        search: req.query.search
                     });
                 }
-                //Sorting ideas by descending likes
-                ideas.sort(function(a, b){
-                    return b.likes.length - a.likes.length;
-                })
-                res.render("ideas/index", {ideas: ideas});
-            }
+            });
         });
     }else{
-        Idea.find().populate("user").exec(function(err, ideas){
-            if(err){
-                console.log(err);
-            }else{
-                //Checking what idea the current User liked (to change de lightbulb icon)
-                if(req.user){
-                    ideas.forEach(function(idea){
-                        idea.likes.forEach(function(like){
-                            if(like.user.id.equals(req.user.id)){
-                                idea.isLiked = true;
-                            }
-                        })
+        Idea.find().skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
+            //Sorting ideas by descending likes
+            ideas.sort(function(a, b){
+                return b.likes.length - a.likes.length;
+            })
+            Idea.countDocuments().exec(function (err, count) {
+                if(err){
+                    console.log(err);
+                }else{
+                    //Checking what idea the current User liked (to change de lightbulb icon)
+                    if(req.user){
+                        ideas.forEach(function(idea){
+                            idea.likes.forEach(function(like){
+                                if(like.user.id.equals(req.user.id)){
+                                    idea.isLiked = true;
+                                }
+                            })
+                        });
+                    }
+                    res.render("ideas/index", {
+                        ideas: ideas,
+                        current: page,
+                        pages: Math.ceil(count / perPage),
+                        noMatch: noMatch,
+                        search: false
                     });
                 }
-                //Sorting ideas by descending likes
-                ideas.sort(function(a, b){
-                    return b.likes.length - a.likes.length;
-                })
-                res.render("ideas/index", {ideas: ideas});
-            }
+            });
         });
     }
 });

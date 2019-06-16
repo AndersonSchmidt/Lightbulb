@@ -102,3 +102,14 @@ input:-webkit-autofill  {
 label i.fa-lightbulb:hover {
     cursor: pointer;
 }
+
+.pagination li a,
+.pagination li.disabled a {
+    background: #574b4f;
+    border: none;
+}
+
+.pagination>li.disabled>a:hover,  
+.pagination>li>a:hover {
+    background-color: #343233;
+}
