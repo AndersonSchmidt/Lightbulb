@@ -21,7 +21,7 @@
                             <em>by: <a href="/users/<%= idea.user._id %>"><%= idea.user.username %> </a> </em>
                             
                             <span style="float:right;"> 
-                                <%= idea.likes.length %>
+                                <%= idea.totalLikes %>
                                 <label for="like_<%=idea.id %>">
                                     <% if(idea.isLiked){ %>
                                         <i class="fas fa-lightbulb"></i>                                      

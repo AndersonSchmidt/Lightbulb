@@ -19,7 +19,7 @@
                     <p>
                         <em> Submitted By <a href="/users/<%= idea.user._id %>"><%= idea.user.username %> </a></em>
                         <span style="float:right;">
-                            <%= idea.likes.length %>  
+                            <%= idea.totalLikes %>  
                             <label for="sendLike">
                                 <% if(idea.isLiked){ %>
                                     <i class="fas fa-lightbulb"></i>                                      

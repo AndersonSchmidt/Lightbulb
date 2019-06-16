@@ -31,7 +31,7 @@ router.get("/ideas", function(req, res){
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         };
         const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
+        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
             Idea.countDocuments({$or: [{name: searchRegex}, {description: searchRegex}]}).exec(function (err, count) {
                 if(err){
                     console.log(err);
@@ -46,10 +46,6 @@ router.get("/ideas", function(req, res){
                             })
                         });
                     }
-                    //Sorting ideas by descending likes
-                    ideas.sort(function(a, b){
-                        return b.likes.length - a.likes.length;
-                    })
                     res.render("ideas/index", {
                         ideas: ideas,
                         current: page,
@@ -61,11 +57,7 @@ router.get("/ideas", function(req, res){
             });
         });
     }else{
-        Idea.find().skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
-            //Sorting ideas by descending likes
-            ideas.sort(function(a, b){
-                return b.likes.length - a.likes.length;
-            })
+        Idea.find().sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
             Idea.countDocuments().exec(function (err, count) {
                 if(err){
                     console.log(err);
@@ -183,6 +175,7 @@ router.delete("/ideas/:id", middleware.checkIdeaOwner, function(req, res){
     });
 });
 
+//LIKE OR DISLIKE AN IDEA
 router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
     Idea.findById(req.params.id, function(err, idea){
         if(err){
@@ -194,6 +187,7 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
                 if(like.user.id.equals(req.user.id)){
                     var index = idea.likes.indexOf(like);
                     idea.likes.splice(index, 1);
+                    idea.totalLikes --;
                     isLiked = true;
                 }
             });
@@ -204,6 +198,7 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
                         id: req.user.id
                     }
                 }
+                idea.totalLikes ++;
                 idea.likes.push(like);
             }
 

@@ -5,6 +5,7 @@ var ideaSchema = new mongoose.Schema({
     description: String,
     imagePath: String,
     date: String,
+    totalLikes: {type: Number, default: 0},
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
