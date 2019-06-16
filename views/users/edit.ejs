@@ -7,7 +7,7 @@
             <form action="/users/<%= user.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
-                    <input type="text" class="form-control formInput" name="username" placeholder="Username" value="<%= user.username %>">
+                    <input type="text" class="form-control formInput" name="username" placeholder="Username" value="<%= user.username %>" required>
                 </div>
                 
                 <div class="form-group">
@@ -20,7 +20,7 @@
 
                 <div class="form-group">
                     <label id="imageLabel" class="btn btn-block formInput" for="image"> Avatar <i class="fas fa-cloud-upload-alt"></i></label>
-                    <input type="file" class="btn btn-block formInput" id="image" name="image" accept="image/*" style="display: none">
+                    <input type="file" class="btn btn-block formInput" id="image" name="image" accept="image/*" style="display: none" required>
                 </div>
 
                 <!-- Adding the file name to the upload image label-->
