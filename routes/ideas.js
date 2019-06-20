@@ -122,7 +122,11 @@ router.get("/ideas/:id", function(req, res){
                     }
                 });
             }
-            res.render("ideas/show", {idea: idea});
+            if(idea){
+                res.render("ideas/show", {idea: idea});
+            }else{
+                res.redirect("/ideas");
+            }
         }
     });
 });
