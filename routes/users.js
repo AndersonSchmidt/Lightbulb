@@ -59,6 +59,7 @@ router.put("/users/:id", upload.single("image"), function(req, res){
                 user.avatarPath = req.file.path.replace('public\\', '/');
             }
             user.username = req.body.username;
+            user.bio = req.body.bio;
             user.save();
             req.logIn(user, function(err) {
                 if (err) {
