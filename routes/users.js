@@ -82,7 +82,7 @@ router.delete("/users/:id", function(req, res){
                 if(err){
                     console.log(err);
                 }else{
-                    Comment.deleteMany({user: Object(req.params.id)}, function(err, comments){
+                    Comment.deleteMany({user: ObjectId(req.params.id)}, function(err, comments){
                         if(err){
                             console.log(err);
                         }else{
