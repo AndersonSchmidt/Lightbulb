@@ -3,7 +3,7 @@
     <header class="jumbotron text-center" id="myMainJumbotron">
         <h1><i class="far fa-lightbulb"></i> Lightbulb</h1>
         <p> Share your best ideas with the world</p>
-        <a href="/ideas/new" class="btn btn-lg" id="myMainButton">Share an Idea</a>
+        <a href="/ideas/new" class="btn btn-lg" id="myMainButton" onfocus="textToSpeech('Share an Idea')">Share an Idea</a>
     </header>
     
     <div class="row text-center" style="display: flex; flex-wrap: wrap"> 
@@ -11,14 +11,14 @@
         <% ideas.forEach(function(idea){ %>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
-                    <a href="/ideas/<%= idea.id %>">
+                    <a href="/ideas/<%= idea.id %>" onfocus="textToSpeech('<%= idea.name %>')">
                         <img src="<%= idea.imagePath %>" class="indexIdeaImg">
                     </a>
                     <div class="caption">
                         <h4> <%= idea.name %> </h4>
                         <br>                         
                         <p class="text-left" style="margin: 0">
-                            <em>by: <a href="/users/<%= idea.user._id %>"><%= idea.user.username %> </a> </em>
+                            <em>by: <a href="/users/<%= idea.user._id %>" onfocus="textToSpeech('<%= idea.user.username %>')"><%= idea.user.username %> </a> </em>
                             
                             <span style="float:right;"> 
                                 <%= idea.totalLikes %>

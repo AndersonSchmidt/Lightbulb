@@ -7,16 +7,16 @@
             <form action="/ideas" method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
-                    <input type="text" class="form-control formInput" name="idea[name]" placeholder="Name" required>
+                    <input type="text" class="form-control formInput" name="idea[name]" placeholder="Name" required onfocus="textToSpeech('Name')">
                 </div>
 
                 <div class="form-group">
-                    <textarea class="form-control formInput" name="idea[description]" placeholder="Description" required></textarea>                    
+                    <textarea class="form-control formInput" name="idea[description]" placeholder="Description" required onfocus="textToSpeech('Description')"></textarea>                    
                 </div>
 
                 <div class="form-group">
                     <label id="imageLabel" class="btn btn-block formInput" for="image"> Upload Image <i class="fas fa-cloud-upload-alt"></i></label>
-                    <input type="file" class="btn btn-block formInput" id="image" name="image" accept="image/*" required style="display: none">
+                    <input type="file" class="btn btn-block formInput" id="image" name="image" accept="image/*" required style="display: none" onfocus="textToSpeech('Image')">
                 </div>
 
                 <!-- Adding the file name to the upload image label-->
@@ -38,11 +38,11 @@
                 </script>
             
                 <div class="form-group">
-                        <button class="btn btn-lg btn-block submitButton">Submit</button>
+                    <button class="btn btn-lg btn-block submitButton" onfocus="textToSpeech('Submit')">Submit</button>
                 </div>
 
             </form>
-            <a href="/ideas">Go Back</a>
+            <a href="/ideas" onfocus="textToSpeech('Go back')">Go Back</a>
         </div>
     </div>
 <% include ../partials/footer %>
