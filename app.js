@@ -9,6 +9,7 @@ var express        = require("express"),
     passport       = require("passport"),
     LocalStrategy  = require("passport-local"),
     User           = require("./models/user");
+    require('dotenv').config();
 
 var ideaRoutes    = require("./routes/ideas"),
     commentRoutes = require("./routes/comments"),
