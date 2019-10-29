@@ -124,6 +124,7 @@ router.get("/ideas/:id", function(req, res){
             }
             res.render("ideas/show", {idea: idea});
         }else{
+            req.flash('error', 'This idea is no longer available');
             res.redirect("/ideas");
         }
     });
