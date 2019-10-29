@@ -114,8 +114,8 @@ router.get("/ideas/:id", function(req, res){
         if(err){
             console.log(err);
         }else{
-             //Checking if the current User liked this idea (to change de lightbulb icon)
-             if(req.user){
+             //Checking if the current User liked this idea (to change the lightbulb icon)
+            if(req.user){
                 idea.likes.forEach(function(like){
                     if(like.user.id.equals(req.user.id)){
                         idea.isLiked = true;
