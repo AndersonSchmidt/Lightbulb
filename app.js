@@ -16,6 +16,16 @@ var ideaRoutes    = require("./routes/ideas"),
     userRoutes    = require("./routes/users"),
     indexRoutes   = require("./routes/index");
 
+    var fs = require('fs');
+    var util = require('util');
+    var log_file = fs.createWriteStream(__dirname + '/lightbulb.log', {flags : 'w'});
+    var log_stdout = process.stdout;
+    
+    console.log = function(d) {
+      log_file.write(util.format(d) + '\n');
+      log_stdout.write(util.format(d) + '\n');
+    };
+
 // MONGO CONNECTION
 mongoose.connect("mongodb://localhost:27017/lightbulb", {useNewUrlParser: true});
 
