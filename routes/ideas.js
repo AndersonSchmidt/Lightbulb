@@ -113,8 +113,8 @@ router.get("/ideas/:id", function(req, res){
     Idea.findById(req.params.id).populate("user").populate({path: 'comments', populate: {path: 'user'}}).exec(function(err, idea){
         if(err){
             console.log(err);
-        }else{
-             //Checking if the current User liked this idea (to change the lightbulb icon)
+        }else if(idea){
+            //Checking if the current User liked this idea (to change the lightbulb icon)
             if(req.user){
                 idea.likes.forEach(function(like){
                     if(like.user.id.equals(req.user.id)){
@@ -122,11 +122,9 @@ router.get("/ideas/:id", function(req, res){
                     }
                 });
             }
-            if(idea){
-                res.render("ideas/show", {idea: idea});
-            }else{
-                res.redirect("/ideas");
-            }
+            res.render("ideas/show", {idea: idea});
+        }else{
+            res.redirect("/ideas");
         }
     });
 });
