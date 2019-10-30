@@ -23,7 +23,7 @@ router.get("/users/:id", function(req, res){
     User.findById(req.params.id, function(err, user){
         if(err){
             console.log(err);
-        }else{
+        }else if(user){
             Idea.find({user: ObjectId(req.params.id)}, function(err, ideas){
                 if(err){
                     console.log(err);
@@ -31,6 +31,9 @@ router.get("/users/:id", function(req, res){
                     res.render("users/show", {user: user, ideas: ideas});
                 }
             }); 
+        }else {
+            req.flash('error', 'This user does not exist');
+            res.redirect('/ideas');
         }
     })
 }); 
