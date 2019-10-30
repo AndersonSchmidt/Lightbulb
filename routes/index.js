@@ -57,7 +57,9 @@ router.get("/login", function(req, res){
 // Login logic
 router.post("/login", passport.authenticate("local", {
     successRedirect: "/ideas",
-    failureRedirect: "/login"
+    failureRedirect: "/login",
+    successFlash: "Login successful",
+    failureFlash: "The username or password is incorrect"
 }), function(req, res){
     
 });
