@@ -3,6 +3,7 @@ var express = require("express"),
     User    = require("../models/user"),
     Idea    = require("../models/idea"),
     Comment = require("../models/comment");
+    middleware = require("../middleware");
     
 var ObjectId = require('mongoose').Types.ObjectId;
 var router = express.Router();
@@ -39,7 +40,7 @@ router.get("/users/:id", function(req, res){
 }); 
 
 // EDIT USER
-router.get("/users/:id/edit", function(req, res){
+router.get("/users/:id/edit", middleware.checkUserOwner, function(req, res){
     User.findById(req.params.id, function(err, user){
         if(err){
             console.log(err);
@@ -50,7 +51,7 @@ router.get("/users/:id/edit", function(req, res){
 });
 
 // UPDATE USER
-router.put("/users/:id", upload.single("image"), function(req, res){
+router.put("/users/:id", middleware.checkUserOwner, upload.single("image"), function(req, res){
     User.findById(req.params.id, function(err, user){
         if(err){
             console.log(err);
@@ -76,7 +77,7 @@ router.put("/users/:id", upload.single("image"), function(req, res){
 });
 
 // DELETE USER
-router.delete("/users/:id", function(req, res){
+router.delete("/users/:id", middleware.checkUserOwner, function(req, res){
     User.findByIdAndDelete(req.params.id, function(err, user){
         if(err){
             console.log(err);
