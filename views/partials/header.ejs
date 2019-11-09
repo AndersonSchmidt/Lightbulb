@@ -19,6 +19,9 @@
 
             function toggleListen() {
                 this.listen = !this.listen;
+                var earIcon = $('.fa-assistive-listening-systems');
+
+                earIcon.css('color') == 'rgb(239, 218, 185)' ?  earIcon.css('color', '#FFCC00') : earIcon.css('color', '#efdab9');
             }
 
             function textToSpeech(text) {
