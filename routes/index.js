@@ -187,4 +187,9 @@ router.post('/reset/:token', function(req, res) {
     })
 });
 
+// FAQ
+router.get('/faq', function(req, res) {
+    res.render('faq');
+});
+
 module.exports = router;
