@@ -63,6 +63,7 @@ router.put("/users/:id", middleware.checkUserOwner, upload.single("image"), func
                 user.avatarPath = req.file.path.replace('public\\', '/');
             }
             user.username = req.body.username;
+            user.email = req.body.email;
             user.bio = req.body.bio;
             user.save();
             req.logIn(user, function(err) {
