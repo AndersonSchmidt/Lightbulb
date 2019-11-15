@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Open Sans";
+    src: url('/fonts/OpenSans-Regular.ttf') format("truetype");
+}
+
 ::placeholder {
     color: #efdab9 !important;
     opacity: 0.6;
@@ -21,7 +26,7 @@ i.fa-lightbulb {
 }
 
 body {
-    font-family: 'Open Sans', sans-serif; 
+    font-family: 'Open Sans'; 
     color: #efdab9;
     background-color: #343233;
 }
