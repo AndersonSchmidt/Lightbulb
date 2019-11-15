@@ -6,6 +6,7 @@ var passport   = require("passport");
 var async      = require("async");
 var nodemailer = require("nodemailer");
 var crypto     = require("crypto");
+var zipFolder  = require('zip-folder');
 
 // MULTER SETTINGS
 var storage = multer.diskStorage({
@@ -190,6 +191,17 @@ router.post('/reset/:token', function(req, res) {
 // FAQ
 router.get('/faq', function(req, res) {
     res.render('faq');
+});
+
+// Images Backup Download
+router.get('/backup', function(req, res){
+    zipFolder('public/images', 'public/images.zip', function(err) {
+        if(err) {
+            console.log('ZIP Images Error: ', err);
+        } else {
+            res.download('public/images.zip');
+        }
+    });
 });
 
 module.exports = router;
