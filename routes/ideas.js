@@ -150,6 +150,11 @@ router.put("/ideas/:id", middleware.checkIdeaOwner, upload.single("image"), func
         if(err){
             console.log(err);
         }else {
+            // Deleting old idea image
+            fs.unlink("public/" + idea.imagePath, function (err) {
+                if (err) throw err;
+                console.log('File deleted!');
+            });
             res.redirect("/ideas/" + req.params.id);
         }
     }) ;

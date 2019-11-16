@@ -61,6 +61,11 @@ router.put("/users/:id", middleware.checkUserOwner, upload.single("image"), func
                 user.changePassword(req.body.oldPassword, req.body.newPassword);
             }
             if(req.file){
+                // Deleting old user image
+                fs.unlink("public/" + user.avatarPath, function (err) {
+                    if (err) throw err;
+                    console.log('File deleted!');
+                });
                 user.avatarPath = req.file.path.replace('public\\', '/');
             }
             user.username = req.body.username;
