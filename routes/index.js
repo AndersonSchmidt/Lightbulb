@@ -73,11 +73,12 @@ router.get("/logout", function(req, res){
     res.redirect("/ideas");
 });
 
-// Forgot password
+// Show forgot password form
 router.get('/forgot', function(req, res) {
     res.render('forgot');
 });
 
+// Emailing token to user
 router.post('/forgot', function(req, res, next) {
     async.waterfall([
         function(done) {
@@ -129,6 +130,7 @@ router.post('/forgot', function(req, res, next) {
     });
 });
 
+// Showing reset password form
 router.get('/reset/:token', function(req, res) {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }}, function(err, user) {
         if(!user) {
@@ -139,6 +141,7 @@ router.get('/reset/:token', function(req, res) {
     });
 });
 
+// Resetting user password
 router.post('/reset/:token', function(req, res) {
     async.waterfall([
         function(done) {

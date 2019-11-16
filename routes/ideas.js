@@ -186,6 +186,7 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
         }else{
             var isLiked = false;
 
+            // Unliking the idea
             idea.likes.forEach(function(like){
                 if(like.user.id.equals(req.user.id)){
                     var index = idea.likes.indexOf(like);
@@ -195,6 +196,7 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
                 }
             });
 
+            // Liking the idea
             if(!isLiked){
                 var like = {
                     user: {
