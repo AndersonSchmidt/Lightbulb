@@ -7,6 +7,7 @@ var async      = require("async");
 var nodemailer = require("nodemailer");
 var crypto     = require("crypto");
 var zipFolder  = require('zip-folder');
+var middleware = require("../middleware");
 
 // MULTER SETTINGS
 var storage = multer.diskStorage({
@@ -194,7 +195,7 @@ router.get('/faq', function(req, res) {
 });
 
 // Images Backup Download
-router.get('/images-backup', function(req, res){
+router.get('/images-backup', middleware.isAdmin, function(req, res){
     zipFolder('public/images', 'backup/images.zip', function(err) {
         if(err) {
             console.log('ZIP Images Error: ', err);
@@ -205,7 +206,7 @@ router.get('/images-backup', function(req, res){
 });
 
 // Database Backup Download
-router.get('/database-backup', function(req, res) {
+router.get('/database-backup', middleware.isAdmin, function(req, res) {
         zipFolder('/Users/Anderson/Desktop/Developer/mongodb/bin/dump', 'backup/database.zip', function(err) {
         if(err) {
             console.log('ZIP Database Error: ', err);

@@ -68,4 +68,13 @@ middlewareObj.checkUserOwner = function(req, res, next) {
     }
 }
 
+middlewareObj.isAdmin = function(req, res, next) {
+    if(req.isAuthenticated() && req.user.isAdmin) {
+       next();
+    }else{
+        req.flash("error", "You dont't have permission to do that");
+        res.redirect("/ideas");
+    }
+}
+
 module.exports = middlewareObj;
