@@ -15,7 +15,7 @@
                         <span class="pull-right"> <%= idea.date.split(" ")[0] %> </span>
                     </p>
 
-                    <p tabindex="0"> <%= idea.description %></p>
+                    <p tabindex="0" onfocus="textToSpeech('<%= idea.description %>')"> <%= idea.description %></p>
                     <p>
                         <em> Submitted By <a href="/users/<%= idea.user._id %>"><%= idea.user.username %> </a></em>
                         <span style="float:right;">
