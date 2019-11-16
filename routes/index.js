@@ -194,14 +194,25 @@ router.get('/faq', function(req, res) {
 });
 
 // Images Backup Download
-router.get('/backup', function(req, res){
-    zipFolder('public/images', 'public/images.zip', function(err) {
+router.get('/images-backup', function(req, res){
+    zipFolder('public/images', 'backup/images.zip', function(err) {
         if(err) {
             console.log('ZIP Images Error: ', err);
         } else {
-            res.download('public/images.zip');
+            res.download('backup/images.zip');
         }
     });
 });
+
+// Database Backup Download
+router.get('/database-backup', function(req, res) {
+        zipFolder('/Users/Anderson/Desktop/Developer/mongodb/bin/dump', 'backup/database.zip', function(err) {
+        if(err) {
+            console.log('ZIP Database Error: ', err);
+        } else {
+            res.download('backup/database.zip');
+        }
+    });
+})
 
 module.exports = router;
