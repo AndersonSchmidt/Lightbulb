@@ -18,11 +18,13 @@ var ideaRoutes    = require("./routes/ideas"),
 
     var fs = require('fs');
     var util = require('util');
-    var log_file = fs.createWriteStream(__dirname + '/lightbulb.log', {flags : 'w'});
+    var log_file = fs.createWriteStream(__dirname + '/lightbulb.log', {flags : 'a'});
     var log_stdout = process.stdout;
     
     console.log = function(d) {
-      log_file.write(util.format(d) + '\n');
+      var date = new Date();
+      date = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+      log_file.write(date + ' ' + util.format(d) + '\n');
       log_stdout.write(util.format(d) + '\n');
     };
 
