@@ -10,7 +10,7 @@
         </div>
         <% if(currentUser && (user._id.equals(currentUser._id) || currentUser.isAdmin)) { %>
             <a href="/users/<%=user.id%>/edit" class="btn btn-warning" style="border: none; color: #574b4f">Edit</a>
-            <form action="/users/<%=user.id%>?_method=DELETE" method="POST" class="delete-form" style="display: inline">
+            <form action="/users/<%=user.id%>?_method=DELETE" method="POST" class="delete-form" style="display: inline" onsubmit="return confirm('Are you sure?')">
                 <button class="btn btn-danger" style="border: none; color: #574b4f">Delete</button>
             </form>
         <% } %>
