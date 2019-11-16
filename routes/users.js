@@ -4,6 +4,7 @@ var express = require("express"),
     Idea    = require("../models/idea"),
     Comment = require("../models/comment");
     middleware = require("../middleware");
+    fs         = require("fs");
     
 var ObjectId = require('mongoose').Types.ObjectId;
 var router = express.Router();
@@ -83,19 +84,34 @@ router.delete("/users/:id", middleware.checkUserOwner, function(req, res){
         if(err){
             console.log(err);
         }else{
-            Idea.deleteMany({user: ObjectId(req.params.id)}, function(err, ideas){
-                if(err){
-                    console.log(err);
-                }else{
-                    Comment.deleteMany({user: ObjectId(req.params.id)}, function(err, comments){
-                        if(err){
-                            console.log(err);
-                        }else{
-                            res.redirect("/ideas");
-                        }
-                    });
-                }
-            })
+            // Deleting user image
+            fs.unlink("public/" + user.avatarPath, function (err) {
+                if (err) throw err;
+                console.log('File deleted!');
+            });
+            Idea.find({user: ObjectId(req.params.id)}, function(err, ideas) {
+                 // Deleting all ideas images
+                ideas.forEach((idea) => {
+                     fs.unlink("public/" + idea.imagePath, function (err) {
+                         if (err) throw err;
+                         console.log('File deleted!');
+                     });
+                 });
+
+                Idea.deleteMany({user: ObjectId(req.params.id)}, function(err, ideas){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        Comment.deleteMany({user: ObjectId(req.params.id)}, function(err, comments){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                res.redirect("/ideas");
+                            }
+                        });
+                    }
+                })
+            });
         }
     });
 });
