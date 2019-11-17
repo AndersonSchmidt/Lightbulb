@@ -36,7 +36,7 @@ router.get("/ideas", function(req, res){
                 if(err){
                     console.log(err);
                 }else{
-                    //Checking what idea the current liked (to change de lightbulb icon)
+                    //Checking what idea the current User liked (to change de lightbulb icon)
                     if(req.user){
                         ideas.forEach(function(idea){
                             idea.likes.forEach(function(like){
