@@ -16,6 +16,7 @@ var ideaRoutes    = require("./routes/ideas"),
     userRoutes    = require("./routes/users"),
     indexRoutes   = require("./routes/index");
 
+    // LOG
     var fs = require('fs');
     var util = require('util');
     var log_file = fs.createWriteStream(__dirname + '/lightbulb.log', {flags : 'a'});
