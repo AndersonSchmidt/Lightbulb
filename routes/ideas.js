@@ -31,7 +31,7 @@ router.get("/ideas", function(req, res){
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         };
         const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
+        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("users").exec(function(err, ideas){
             Idea.countDocuments({$or: [{name: searchRegex}, {description: searchRegex}]}).exec(function (err, count) {
                 if(err){
                     console.log(err);
@@ -57,7 +57,7 @@ router.get("/ideas", function(req, res){
             });
         });
     }else{
-        Idea.find().sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("user").exec(function(err, ideas){
+        Idea.find().sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("users").exec(function(err, ideas){
             Idea.countDocuments().exec(function (err, count) {
                 if(err){
                     console.log(err);
@@ -97,8 +97,8 @@ router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(re
 
     req.body.idea.imagePath = req.file.path.replace('public\\', '/');
 
-    req.body.idea.user = req.user._id;
-
+    req.body.idea.users = [];
+    req.body.idea.users.push(req.user._id);
     Idea.create(req.body.idea, function(err, idea){
         if(err){
             console.log(err);
@@ -110,7 +110,7 @@ router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(re
 
 // SHOW IDEA
 router.get("/ideas/:id", function(req, res){
-    Idea.findById(req.params.id).populate("user").populate({path: 'comments', populate: {path: 'user'}}).exec(function(err, idea){
+    Idea.findById(req.params.id).populate("users").populate({path: 'comments', populate: {path: 'user'}}).exec(function(err, idea){
         if(err){
             console.log(err);
         }else if(idea){

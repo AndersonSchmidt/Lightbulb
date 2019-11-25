@@ -26,7 +26,7 @@ router.get("/users/:id", function(req, res){
         if(err){
             console.log(err);
         }else if(user){
-            Idea.find({user: ObjectId(req.params.id)}, function(err, ideas){
+            Idea.find({users: { $in: ObjectId(req.params.id)}}, function(err, ideas){
                 if(err){
                     console.log(err);
                 }else{
@@ -94,7 +94,7 @@ router.delete("/users/:id", middleware.checkUserOwner, function(req, res){
                 if (err) throw err;
                 console.log('File deleted!');
             });
-            Idea.find({user: ObjectId(req.params.id)}, function(err, ideas) {
+            Idea.find({users: { $in: ObjectId(req.params.id)}}, function(err, ideas) {
                  // Deleting all ideas images
                 ideas.forEach((idea) => {
                      fs.unlink("public/" + idea.imagePath, function (err) {
@@ -103,7 +103,7 @@ router.delete("/users/:id", middleware.checkUserOwner, function(req, res){
                      });
                  });
 
-                Idea.deleteMany({user: ObjectId(req.params.id)}, function(err, ideas){
+                Idea.deleteMany({users: { $in: ObjectId(req.params.id)}}, function(err, ideas){
                     if(err){
                         console.log(err);
                     }else{

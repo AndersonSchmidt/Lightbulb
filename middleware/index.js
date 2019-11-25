@@ -16,7 +16,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
 middlewareObj.checkIdeaOwner = function(req, res, next){
     if(req.isAuthenticated()){
         Idea.findById(req.params.id, function(err, idea){
-            if(idea.user.equals(req.user._id) || req.user.isAdmin){
+            if(idea.users.some(user => {return user._id.equals(req.user._id)}) || req.user.isAdmin){
                 next();
             }else{
                 res.redirect("back");
