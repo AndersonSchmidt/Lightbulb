@@ -19,8 +19,9 @@
                         <br>                         
                         <p class="text-left" style="margin: 0">
                             <em>by: 
-                                <% idea.users.forEach(user => { %>
-                                    <a href="/users/<%= user._id %>" onfocus="textToSpeech('<%= user.username %>')"><%= user.username %> </a> 
+                                <a href="/users/<%= idea.user._id %>" onfocus="textToSpeech('<%= idea.user.username %>')"><%= idea.user.username %> </a>
+                                <% idea.contributors.forEach(contributor => { %>
+                                    <a href="/users/<%= contributor._id %>" onfocus="textToSpeech('<%= contributor.username %>')"><%= contributor.username %> </a> 
                                 <% }) %>
                             </em>
 

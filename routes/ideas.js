@@ -4,6 +4,7 @@ var express    = require("express"),
     Idea       = require("../models/idea"),
     Comment    = require("../models/comment"),
     middleware = require("../middleware");
+    User       = require("../models/user");
 
 var router = express.Router();
     
@@ -31,7 +32,7 @@ router.get("/ideas", function(req, res){
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         };
         const searchRegex = new RegExp(escapeRegex(req.query.search), 'gi');
-        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("users").exec(function(err, ideas){
+        Idea.find({$or: [{name: searchRegex}, {description: searchRegex}]}).sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("user").populate("contributors").exec(function(err, ideas){
             Idea.countDocuments({$or: [{name: searchRegex}, {description: searchRegex}]}).exec(function (err, count) {
                 if(err){
                     console.log(err);
@@ -57,7 +58,7 @@ router.get("/ideas", function(req, res){
             });
         });
     }else{
-        Idea.find().sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("users").exec(function(err, ideas){
+        Idea.find().sort({totalLikes: 'desc'}).skip((perPage * page) - perPage).limit(perPage).populate("user").populate("contributors").exec(function(err, ideas){
             Idea.countDocuments().exec(function (err, count) {
                 if(err){
                     console.log(err);
@@ -97,20 +98,40 @@ router.post("/ideas", middleware.isLoggedIn, upload.single("image"), function(re
 
     req.body.idea.imagePath = req.file.path.replace('public\\', '/');
 
-    req.body.idea.users = [];
-    req.body.idea.users.push(req.user._id);
-    Idea.create(req.body.idea, function(err, idea){
-        if(err){
-            console.log(err);
-        }else{
-            res.redirect("/ideas/" + idea.id);
-        }
-    });
+    req.body.idea.user = req.user._id;
+
+    req.body.idea.contributors = [];
+
+    if(req.body.idea.contributorEmail) {
+        User.findOne({email: req.body.idea.contributorEmail}, function(err, user) {
+            if(err) {
+                console.log(err);
+            }else{
+                req.body.idea.contributors.push(user._id);
+                
+                Idea.create(req.body.idea, function(err, idea){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.redirect("/ideas/" + idea.id);
+                    }
+                });
+            }
+        });
+    } else {
+        Idea.create(req.body.idea, function(err, idea){
+            if(err){
+                console.log(err);
+            }else{
+                res.redirect("/ideas/" + idea.id);
+            }
+        });
+    }
 });
 
 // SHOW IDEA
 router.get("/ideas/:id", function(req, res){
-    Idea.findById(req.params.id).populate("users").populate({path: 'comments', populate: {path: 'user'}}).exec(function(err, idea){
+    Idea.findById(req.params.id).populate("user").populate("contributors").populate({path: 'comments', populate: {path: 'user'}}).exec(function(err, idea){
         if(err){
             console.log(err);
         }else if(idea){
@@ -155,6 +176,16 @@ router.put("/ideas/:id", middleware.checkIdeaOwner, upload.single("image"), func
                 fs.unlink("public/" + idea.imagePath, function (err) {
                     if (err) throw err;
                     console.log('File deleted!');
+                });
+            }
+            if(req.body.idea.contributorEmail) {
+                User.findOne({email: req.body.idea.contributorEmail}, function(err, user) {
+                    if(err) {
+                        
+                    }else {
+                        idea.contributors.push(user._id);
+                        idea.save();
+                    }
                 });
             }
             res.redirect("/ideas/" + req.params.id);
@@ -218,6 +249,20 @@ router.post("/ideas/:id/likes", middleware.isLoggedIn, function(req, res){
 
             res.redirect("back");
         }
+    });
+});
+
+// REMOVE CONTRIBUTOR
+router.put('/ideas/removeContributor/:ideaId/:userId', middleware.isLoggedIn, function(req, res){ 
+    Idea.findById(req.params.ideaId, function(err, idea) {
+        idea.contributors.forEach(contributor => {
+            if(contributor.equals(req.params.userId)){
+                var index = idea.contributors.indexOf(contributor);
+                idea.contributors.splice(index, 1);
+            }
+        });
+        idea.save();
+        res.redirect("back");
     });
 });
 

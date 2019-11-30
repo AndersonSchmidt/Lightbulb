@@ -6,12 +6,14 @@ var ideaSchema = new mongoose.Schema({
     imagePath: String,
     date: String,
     totalLikes: {type: Number, default: 0},
-    users: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    contributors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
