@@ -14,7 +14,7 @@
     "connect-flash": "^0.1.1",
     "dotenv": "^8.1.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-favicon": "^2.0.1",
     "express-session": "^1.16.1",
     "howler": "^2.1.2",
